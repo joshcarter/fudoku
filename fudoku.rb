@@ -90,19 +90,18 @@ class Grid
     # Remove any values used across the entire grid; each number can
     # only be used once.
     used_values = Set.new
+
     @cells.each_value do |val|
       if val.class == Integer
         used_values << val
       end
     end
 
-    # Find values used by peers and value +/- 1
+    # Now remove the +1 and -1 values of all peers.
     @peers[index].each do |peer|
       peer_value = @cells[peer]
 
       if peer_value.class == Integer
-        used_values << peer_value
-
         if peer_value > 1
           used_values << peer_value - 1
         end
@@ -115,8 +114,6 @@ class Grid
 
     # Possible values are everything that's left
     values = (@possible_values - used_values).to_a
-
-    # puts "updating possible values at #{index}: used #{used_values.to_a}, values #{values}"
 
     case values.length
     when 0
@@ -134,18 +131,18 @@ class Grid
     end
   end
 
-  # Prints value(s) of particular cell
+  # Prints value(s) of particular cell.
   def cell_to_s(idx)
     if @cells[idx].nil?
       "_"
     elsif @cells[idx].class == Integer
       "#{@cells[idx]}"
     else
-      "#{idx.to_s}" # More than one possible value
+      "#{idx.to_s}" # More than one possible value; just print cell letter
     end
   end
 
-  # Prints cells in pretty format.
+  # Returns grid state in pretty format.
   def to_s
     str = String.new
     str << "      +-+ +-+\n"
