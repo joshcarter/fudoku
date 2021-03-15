@@ -85,14 +85,14 @@ class Grid
   def update_possible_values(index)
     value = @cells[index]
 
-    return if value.class == Integer # Cell already solved
+    return if value.class == Fixnum # Cell already solved
 
     # Remove any values used across the entire grid; each number can
     # only be used once.
     used_values = Set.new
 
     @cells.each_value do |val|
-      if val.class == Integer
+      if val.class == Fixnum
         used_values << val
       end
     end
@@ -101,7 +101,7 @@ class Grid
     @peers[index].each do |peer|
       peer_value = @cells[peer]
 
-      if peer_value.class == Integer
+      if peer_value.class == Fixnum
         if peer_value > 1
           used_values << peer_value - 1
         end
@@ -135,7 +135,7 @@ class Grid
   def cell_to_s(idx)
     if @cells[idx].nil?
       "_"
-    elsif @cells[idx].class == Integer
+    elsif @cells[idx].class == Fixnum
       "#{@cells[idx]}"
     else
       "#{idx.to_s}" # More than one possible value; just print cell letter
@@ -175,7 +175,7 @@ class Grid
   # True if all cells are solved.
   def solved?
     @cells.each_value do |value|
-      return false if value.class != Integer
+      return false if value.class != Fixnum
     end
 
     return true
